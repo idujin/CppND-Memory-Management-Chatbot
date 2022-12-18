@@ -42,11 +42,74 @@ ChatBot::~ChatBot()
     }
 }
 
-//// STUDENT CODE
-////
+// STUDENT CODE
+//
+ChatBot& ChatBot::operator=(ChatBot& source) {
+    std::cout<<"ChatBot Assigning Operator"<<std::endl;
+    if(_image != NULL) {
+        delete _image;
+        _image = NULL;
+    }
+    _image = new wxBitmap();
+    *_image = *source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+    this->_chatLogic->SetChatbotHandle(this);
 
-////
-//// EOF STUDENT CODE
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot& source) {
+    std::cout<<"ChatBot Copying Constructor"<<std::endl;
+    if(_image != NULL) {
+        delete _image;
+        _image = NULL;
+    }
+
+    _image = new wxBitmap();
+    *_image = *source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+    this->_chatLogic->SetChatbotHandle(this);
+
+}
+
+ChatBot::ChatBot(ChatBot&& source) {
+    std::cout<<"ChatBot Moving Constructor"<<std::endl;
+
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+    this->_chatLogic->SetChatbotHandle(this);
+
+    source._image = NULL;
+}
+
+ChatBot& ChatBot::operator=(ChatBot&& source) {
+    std::cout<<"ChatBot Moving Operator"<<std::endl;
+
+    if(this == &source) return *this;
+
+    if(_image != NULL) {
+        delete _image;
+        _image = NULL;
+    }
+
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+    this->_chatLogic->SetChatbotHandle(this);
+
+    source._image = NULL;
+
+    return *this;
+}
+//
+// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
